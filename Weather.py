@@ -54,7 +54,7 @@ response = requests.get(forecast_url)
 forecast_data = response.json()
 
 # Write the forecasted weather data to the sheet
-row = last_row
+row = last_row + 1
 for forecast in forecast_data['list']:
     row += 1
     date = forecast['dt_txt']
