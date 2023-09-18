@@ -3,8 +3,7 @@ name: Schedule
 on:
   schedule:
     - cron: "3 */3 * * *"
-    timezone: America/New_York
-
+    
 jobs:
   build:
     runs-on: ubuntu-latest
