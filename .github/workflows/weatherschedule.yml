@@ -6,11 +6,11 @@ on:
     
     
 jobs:
-  build:
+  run_script:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v2
 
     - name: Set up Python
@@ -18,5 +18,6 @@ jobs:
       with:
         python-version: 3.11.4
 
-    - name: Run code
-      run: Weather.py
+    - name: Run script
+      run: |
+        Weather.py
