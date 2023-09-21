@@ -20,4 +20,4 @@ jobs:
 
     - name: Run script
       run: |
-        Weather.py
+        /usr/bin/python Weather.py
