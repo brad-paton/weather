@@ -24,4 +24,4 @@ jobs:
           pip install -r requirements.txt # Replace with your requirements file name, if necessary
 
       - name: Run Python script
-        run: python weather.py # Replace with your script name
+        run: python Weather.py # Replace with your script name
