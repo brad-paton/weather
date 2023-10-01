@@ -1,0 +1,5 @@
+gspread
+datetime
+requests
+pytz
+oauth2client.service_account
