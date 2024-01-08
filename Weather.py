@@ -61,7 +61,7 @@ eastern_timezone = pytz.timezone('US/Eastern')
 current_time_eastern = current_time.astimezone(eastern_timezone)
 
 # Update the Google Sheet with the current weather data and time
-[current_time_eastern.strftime('%Y-%m-%d %H:%M:%S')] + [worksheet.append_row(list(current_weather.values()))]
+[current_time_eastern.strftime('%Y-%m-%d %H:%M:%S')] + worksheet.append_row(list(current_weather.values()))
 
 # Get the forecast data
 url = f'http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}&units=imperial'
