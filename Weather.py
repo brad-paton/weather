@@ -46,8 +46,9 @@ data = response.json()
 current_weather = {
     'Temperature': data['main']['temp'],
     'Humidity': data['main']['humidity'],
-    'Pressure': data['main']['pressure'],
     'Description': data['weather'][0]['description'],
+    'DateTime': forecast_time_eastern.strftime('%Y-%m-%d %H:%M:%S'),
+    'Pressure': data['main']['pressure'],
     'WindSpeed': data['wind']['speed'],
     'WindDir': data['wind']['deg'],
     'Sunrise': data['sys']['sunrise'],
