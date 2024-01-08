@@ -47,7 +47,6 @@ current_weather = {
     'Temperature': data['main']['temp'],
     'Humidity': data['main']['humidity'],
     'Description': data['weather'][0]['description'],
-    'DateTime': forecast_time_eastern.strftime('%Y-%m-%d %H:%M:%S'),
     'Pressure': data['main']['pressure'],
     'WindSpeed': data['wind']['speed'],
     'WindDir': data['wind']['deg'],
@@ -62,7 +61,7 @@ eastern_timezone = pytz.timezone('US/Eastern')
 current_time_eastern = current_time.astimezone(eastern_timezone)
 
 # Update the Google Sheet with the current weather data and time
-worksheet.append_row(list(current_weather.values()) + [current_time_eastern.strftime('%Y-%m-%d %H:%M:%S')])
+[current_time_eastern.strftime('%Y-%m-%d %H:%M:%S')]) + worksheet.append_row(list(current_weather.values())
 
 # Get the forecast data
 url = f'http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}&units=imperial'
@@ -76,10 +75,10 @@ for forecast_item in data['list']:
     forecast_time_eastern = forecast_time.astimezone(eastern_timezone)
     
     forecast_data = {
+        'Date': forecast_time_eastern.strftime('%Y-%m-%d %H:%M:%S')
         'Temperature': forecast_item['main']['temp'],
         'Humidity': forecast_item['main']['humidity'],
-        'Description': forecast_item['weather'][0]['description'],
-        'Date': forecast_time_eastern.strftime('%Y-%m-%d %H:%M:%S'),
+        'Description': forecast_item['weather'][0]['description']
     }
     forecast.append(forecast_data)
 
