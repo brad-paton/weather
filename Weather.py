@@ -44,14 +44,15 @@ data = response.json()
 
 # Extract the relevant information
 current_weather = {
+    'Date': datetime.utcfromtimestamp(data['dt']).strftime('%Y-%m-%d %H:%M:%S'),
     'Temperature': data['main']['temp'],
     'Humidity': data['main']['humidity'],
     'Description': data['weather'][0]['description'],
     'Pressure': data['main']['pressure'],
     'WindSpeed': data['wind']['speed'],
     'WindDir': data['wind']['deg'],
-    'Sunrise': data['sys']['sunrise'],
-    'Sunset': data['sys']['sunset']
+    'Sunrise': datetime.utcfromtimestamp(data['sys']['sunrise'].strftime('%Y-%m-%d %H:%M:%S'),
+    'Sunset': datetime.utcfromtimestamp(data['sys']['sunset'].strftime('%Y-%m-%d %H:%M:%S')
 
 }
 
@@ -61,7 +62,7 @@ eastern_timezone = pytz.timezone('US/Eastern')
 current_time_eastern = current_time.astimezone(eastern_timezone)
 
 # Update the Google Sheet with the current weather data and time
-worksheet.append_row(list(current_weather.values())) + list(current_time_eastern.strftime('%Y-%m-%d %H:%M:%S'))
+worksheet.append_row(list(current_weather.values()))
 
 # Get the forecast data
 url = f'http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}&units=imperial'
