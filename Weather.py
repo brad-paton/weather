@@ -75,7 +75,7 @@ for forecast_item in data['list']:
     forecast_time_eastern = forecast_time.astimezone(eastern_timezone)
     
     forecast_data = {
-        'Date': forecast_time_eastern.strftime('%Y-%m-%d %H:%M:%S')
+        'Date': forecast_time_eastern.strftime('%Y-%m-%d %H:%M:%S'),
         'Temperature': forecast_item['main']['temp'],
         'Humidity': forecast_item['main']['humidity'],
         'Description': forecast_item['weather'][0]['description']
