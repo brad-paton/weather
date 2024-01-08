@@ -46,7 +46,13 @@ data = response.json()
 current_weather = {
     'Temperature': data['main']['temp'],
     'Humidity': data['main']['humidity'],
-    'Description': data['weather'][0]['description']
+    'Pressure': data['main']['pressure'],
+    'Description': data['weather'][0]['description'],
+    'WindSpeed': data['wind']['speed'],
+    'WindDir': data['wind']['deg'],
+    'Sunrise': data['sys']['sunrise'],
+    'Sunset': data['sys']['sunset']
+
 }
 
 # Convert current time to Eastern Time Zone
