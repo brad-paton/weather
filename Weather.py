@@ -51,8 +51,8 @@ current_weather = {
     'Pressure': data['main']['pressure'],
     'WindSpeed': data['wind']['speed'],
     'WindDir': data['wind']['deg'],
-    'Sunrise': datetime.utcfromtimestamp(data['sys']['sunrise'].strftime('%Y-%m-%d %H:%M:%S'),
-    'Sunset': datetime.utcfromtimestamp(data['sys']['sunset'].strftime('%Y-%m-%d %H:%M:%S')
+    'Sunrise': datetime.utcfromtimestamp(data['sys']['sunrise']).strftime('%Y-%m-%d %H:%M:%S'),
+    'Sunset': datetime.utcfromtimestamp(data['sys']['sunset']).strftime('%Y-%m-%d %H:%M:%S')
 
 }
 
@@ -84,9 +84,7 @@ for forecast_item in data['list']:
     forecast.append(forecast_data)
 
 # Update the Google Sheet with the forecast data
-#worksheet = spreadsheet.add_worksheet(title='Forecast', rows="100", cols="5")
-#header_row = list(forecast[0].keys())
-#worksheet.append_row(header_row)
+
 for forecast_data in forecast:
     worksheet.append_row(list(forecast_data.values()))
 
