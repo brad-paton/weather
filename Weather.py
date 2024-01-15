@@ -23,6 +23,25 @@ CRED = {
   "universe_domain": "googleapis.com"
 }
 
+def convert_unix_to_eastern(unix):
+    utc_time = datetime.utcfromtimestamp(unix)
+
+    # Set the timezone for UTC
+    utc_time = utc_time.replace(tzinfo=pytz.utc)
+
+    # Define the Eastern timezone
+    eastern = pytz.timezone('US/Eastern')
+
+    # Convert the UTC time to Eastern Time
+    eastern_time = utc_time.astimezone(eastern)
+
+    # Format the datetime as a string
+    formatted_time = eastern_time.strftime('%Y-%m-%d %H:%M:%S %Z%z')
+    print(formatted_time)
+    
+    return formatted_time
+
+
 spreadsheet_name = 'weather'
 
 # Authenticate with Google Sheets
@@ -42,24 +61,26 @@ url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&
 response = requests.get(url,timeout=15)
 data = response.json()
 
+
+# Convert current time to Eastern Time Zone
+current_time = datetime.now(pytz.utc)
+eastern_timezone = pytz.timezone('US/Eastern')
+current_time_eastern = current_time.astimezone(eastern_timezone)
+
 # Extract the relevant information
 current_weather = {
-    'Date': datetime.utcfromtimestamp(data['dt']).strftime('%Y-%m-%d %H:%M:%S'),
+    'Date': convert_unix_to_eastern(data['dt']),
     'Temperature': data['main']['temp'],
     'Humidity': data['main']['humidity'],
     'Description': data['weather'][0]['description'],
     'Pressure': data['main']['pressure'],
     'WindSpeed': data['wind']['speed'],
     'WindDir': data['wind']['deg'],
-    'Sunrise': datetime.utcfromtimestamp(data['sys']['sunrise']).strftime('%Y-%m-%d %H:%M:%S'),
-    'Sunset': datetime.utcfromtimestamp(data['sys']['sunset']).strftime('%Y-%m-%d %H:%M:%S')
+    'Sunrise': convert_unix_to_eastern(data['sys']['sunrise']),
+    'Sunset': convert_unix_to_eastern(data['sys']['sunset'])
 
 }
-
-# Convert current time to Eastern Time Zone
-current_time = datetime.now(pytz.utc)
-eastern_timezone = pytz.timezone('US/Eastern')
-current_time_eastern = current_time.astimezone(eastern_timezone)
+print(type(current_weather['Date']))
 
 # Update the Google Sheet with the current weather data and time
 worksheet.append_row(list(current_weather.values()))
