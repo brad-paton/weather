@@ -3,7 +3,3 @@ datetime
 requests
 pytz
 oauth2client
-gspread
-ServiceAccountCredentials
-credentials
-os
