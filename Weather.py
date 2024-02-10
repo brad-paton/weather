@@ -9,33 +9,31 @@ import pytz
 
 # Set up OpenWeatherMap API credentials
 api_key = 'd8803f200694590d01f64d045af4efcf'
-city = 'Orlando,US'
+lat = 28.55
+lon = -81.38
 
 # Set up Google Sheets credentials
 credentials = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 
 
-# Authenticate with Google Sheets
+# Authenticate with Google Sheets API
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials,scope)
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(gcred,scope)
 client = gspread.authorize(credentials)
 
 def convert_unix_to_eastern(unix):
     utc_time = datetime.utcfromtimestamp(unix)
 
-    # Set the timezone for UTC
-    utc_time = utc_time.replace(tzinfo=pytz.utc)
+    utc_time = utc_time.replace(tzinfo=pytz.utc) #Set the timezone for UTC
 
-    # Define the Eastern timezone
-    eastern = pytz.timezone('US/Eastern')
+    eastern = pytz.timezone('US/Eastern') #Define the Eastern timezone
 
-    # Convert the UTC time to Eastern Time
-    eastern_time = utc_time.astimezone(eastern)
+    eastern_time = utc_time.astimezone(eastern) #Convert the UTC time to Eastern Time
 
-    # Format the datetime as a string
-    formatted_time = eastern_time.strftime('%Y-%m-%d %H:%M:%S %Z%z')
+    formatted_time = eastern_time.strftime('%Y-%m-%d %H:%M') # Format the datetime as a string
+
     print(formatted_time)
-    
+
     return formatted_time
 
 
@@ -44,60 +42,58 @@ spreadsheet_name = 'weather'
 # Open the spreadsheet
 spreadsheet = client.open(spreadsheet_name)
 
-# Clear existing worksheet data
+# Clear sheet
 worksheet = spreadsheet.sheet1
 worksheet.clear()
 
 # Get the current weather data
-url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=imperial'
-response = requests.get(url,timeout=15)
+url = f'https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={api_key}&units=imperial'
+response = requests.get(url,timeout=30)
 data = response.json()
-
-
-# Convert current time to Eastern Time Zone
-current_time = datetime.now(pytz.utc)
-eastern_timezone = pytz.timezone('US/Eastern')
-current_time_eastern = current_time.astimezone(eastern_timezone)
 
 # Extract the relevant information
 current_weather = {
-    'Date': convert_unix_to_eastern(data['dt']),
-    'Temperature': data['main']['temp'],
-    'Humidity': data['main']['humidity'],
-    'Description': data['weather'][0]['description'],
-    'Pressure': data['main']['pressure'],
-    'WindSpeed': data['wind']['speed'],
-    'WindDir': data['wind']['deg'],
-    'Sunrise': convert_unix_to_eastern(data['sys']['sunrise']),
-    'Sunset': convert_unix_to_eastern(data['sys']['sunset'])
-
+    'Date': convert_unix_to_eastern(data['current']['dt']),
+    'Temperature': data['current']['temp'],
+    'Humidity': data['current']['humidity'],
+    'Description': data['current']['weather'][0]['description'],
+    'Pressure': data['current']['pressure'],
+    'WindSpeed': data['current']['wind_speed'],
+    'WindDir': data['current']['wind_deg'],
+    'Sunrise': convert_unix_to_eastern(data['current']['sunrise']),
+    'Sunset': convert_unix_to_eastern(data['current']['sunset']),
+    'FeelsLike' : data['current']['feels_like'],
+    'UVIndex' : data['current']['uvi']
 }
-print(type(current_weather['Date']))
 
 # Update the Google Sheet with the current weather data and time
 worksheet.append_row(list(current_weather.values()))
 
 # Get the forecast data
-url = f'http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}&units=imperial'
-response = requests.get(url,timeout=15)
+url = f'https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={api_key}&units=imperial'
+response = requests.get(url,timeout=30)
 data = response.json()
 
 # Extract the relevant forecast information
 forecast = []
 for forecast_item in data['list']:
-    forecast_time = datetime.strptime(forecast_item['dt_txt'], '%Y-%m-%d %H:%M:%S')
-    forecast_time_eastern = forecast_time.astimezone(eastern_timezone)
-    
+
     forecast_data = {
-        'Date': forecast_time_eastern.strftime('%Y-%m-%d %H:%M:%S'),
+        'Date': convert_unix_to_eastern(forecast_item['dt']),
         'Temperature': forecast_item['main']['temp'],
         'Humidity': forecast_item['main']['humidity'],
-        'Description': forecast_item['weather'][0]['description']
+        'Description': forecast_item['weather'][0]['description'],
+        'Pressure' : forecast_item['main']['pressure'],
+        'WindSpeed': forecast_item['wind']['speed'],
+        'WindDir': forecast_item['wind']['deg'],
+        'Sunrise': 0,
+        'Sunset': 0,
+        'FeelsLike' : forecast_item['main']['feels_like'],
+        'UVIndex' : 0
     }
     forecast.append(forecast_data)
 
 # Update the Google Sheet with the forecast data
-
 for forecast_data in forecast:
     worksheet.append_row(list(forecast_data.values()))
 
