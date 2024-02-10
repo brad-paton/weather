@@ -12,7 +12,8 @@ api_key = 'd8803f200694590d01f64d045af4efcf'
 city = 'Orlando,US'
 
 # Set up Google Sheets credentials
-credentials = GOOGLE_APPLICATION_CREDENTIALS
+credentials = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+
 
 # Authenticate with Google Sheets
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
