@@ -28,7 +28,7 @@ credentials = {
 
 # Authenticate with Google Sheets
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials_path,scope)
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials,scope)
 client = gspread.authorize(credentials)
 
 def convert_unix_to_eastern(unix):
