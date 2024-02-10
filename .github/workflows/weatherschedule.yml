@@ -18,4 +18,6 @@ jobs:
       uses: py-actions/py-dependency-install@v4
 
     - name: Run Python script
+      env: 
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
       run: python Weather.py
