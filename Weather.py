@@ -13,7 +13,7 @@ lat = 28.55
 lon = -81.38
 
 # Set up Google Sheets credentials
-gcred = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+gcred = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
 
 # Authenticate with Google Sheets API
