@@ -1,4 +1,6 @@
+import ast
 import gspread
+import json
 from oauth2client.service_account import ServiceAccountCredentials
 from google.auth import credentials
 import os
@@ -12,9 +14,10 @@ api_key = 'd8803f200694590d01f64d045af4efcf'
 lat = 28.55
 lon = -81.38
 
-# Set up Google Sheets credentials
+# Convert secret to JSON
 gcred = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
-
+gcred = ast.literal_eval(gcred)
+gred = json.dumps(gcred)
 
 # Authenticate with Google Sheets API
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
