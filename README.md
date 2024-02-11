@@ -1,3 +1,5 @@
+Sheet Link - https://docs.google.com/spreadsheets/d/1XpOArEsyNjReX-dwsPqDQAUyzoTFK2TS84ObEGDWGyA/edit#gid=0
+
 Things to do before making repo public
 - find a way to was google creds secret that was created
 
