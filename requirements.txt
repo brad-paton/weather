@@ -1,5 +1,6 @@
 gspread
 datetime
 requests
+pandas
 pytz
 oauth2client
