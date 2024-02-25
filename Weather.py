@@ -59,7 +59,7 @@ worksheet.append_row(list(current_weather.values()))
 # Append current data to CSV
 current_weather_url = 'https://raw.githubusercontent.com/brad-paton/weather/main/Weather.csv'
 
-concat_weather(current_weather_url, current)
+LIB.concat_weather(current_weather_url, current)
 
 subprocess.run(['git', 'add', 'Weather.csv'])
 commitmessage = "Updated CSV"
