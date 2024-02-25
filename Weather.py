@@ -52,6 +52,7 @@ current_weather = {
     'FeelsLike' : data['current']['feels_like'],
     'UVIndex' : data['current']['uvi']
 }
+current = list(current_weather.values())
 
 # Update the Google Sheet with the current weather data and time
 worksheet.append_row(list(current_weather.values()))
