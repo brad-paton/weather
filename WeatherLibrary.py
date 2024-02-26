@@ -14,5 +14,5 @@ def concat_weather(csv_url, weather_list):
     df_current = pd.read_csv(csv_url) # Import CSV from url
     df_new = pd.DataFrame(weather_list) # Turn current weather into pandas data frame
     df_concatenated = pd.concat([df_current, df_new]) # Append to data frame
-    csv_concatenated = df_concatenated.to_csv('Current_Weather.csv', index = False) # Turn dataframe into csv
+    csv_concatenated = df_concatenated.to_csv('Weather.csv', index = False) # Turn dataframe into csv
     return csv_concatenated
